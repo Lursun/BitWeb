@@ -5,7 +5,7 @@ python manage.pymake migrations
 ```
 # run
 ```
-python manage.py runserver [[ip:]port]#預設8000
+python manage.py runserver [[ip:]port]#預設8000
 ```
 # 清空數據庫
 ```
