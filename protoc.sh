@@ -1,1 +1,1 @@
- protoc --python_out=djtest/blockchain/protobuf djtest/blockchain/protobuf/*.proto
+ protoc --python_out=./ djtest/blockchain/protobuf/*.proto
