@@ -16,10 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from p2p_web import views as p2p_web_views
+reload(p2p_web_views)
+
 urlpatterns = [
     url(r'^$', p2p_web_views.index),
     url(r'^Query/?$', p2p_web_views.Query),
     url(r'^QueryNode/?$', p2p_web_views.QueryNode),
+    url(r'^AddNode/?$', p2p_web_views.JoinNode),
     url(r'^Tx/?$', p2p_web_views.Tx),
     url(r'^reload/?$', p2p_web_views.reload_urls),
     url(r'^test/?$', p2p_web_views.test, name='home'),

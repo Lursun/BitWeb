@@ -10,7 +10,9 @@ https://docs.djangoproject.com/en/1.11/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from blockchain.p2p import p2p
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djtest.settings")
 
 application = get_wsgi_application()
+p2p.P2PNetworkStart()

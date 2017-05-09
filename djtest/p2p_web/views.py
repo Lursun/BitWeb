@@ -11,10 +11,6 @@ from django.conf import settings
 
 
 
-
-
-p2p.P2PNetworkStart()
-
 def reload_urls(request, urlconf=None):
     if urlconf is None:
         urlconf = settings.ROOT_URLCONF
@@ -24,11 +20,16 @@ def reload_urls(request, urlconf=None):
 
 def Tx(request):
     return HttpResponse("")
+
 def Query(request):
     return HttpResponse("")
+
 def QueryNode(request):
-    print (request.body)
     return HttpResponse(p2p.P2PScoket.getClient())
+def JoinNode(request):
+    p2p.P2PJoinStart((request.GET.get('ip','127.0.0.1'),int(request.GET.get('port','8001'))))
+    return HttpResponse("addNode")
+
 def index(request):
     print (request.body)
     return HttpResponse(p2p.P2PScoket.getClient())

@@ -21,8 +21,8 @@ class P2PScoket:
             time.sleep(3);
     @staticmethod
     def broadcast(message):
-        for socket in P2PScoket.sockets:
-            P2PScoket.send(socket,message)
+        for socket in P2PScoket.s:
+            socket.send(socket,message)
 
     @staticmethod
     def getClient():
@@ -47,13 +47,15 @@ class P2PScoket:
         print 'connect'
     def recv(self):
         while True:
-            data=self.socket.recv(1024)
+            try:
+                data=self.socket.recv(1024)
+                print data
+                print self.client_address
+            except:
+                pass
 
     def send(self,message):
         self.socket.send(message)
-        
-    
-            
 
     def delsocket(self):
         self.socket.close()
@@ -62,12 +64,25 @@ class P2PScoket:
 
 class SocketHandle(SocketServer.BaseRequestHandler):
     def handle(self):
-        client_address=self.client_address
-        server=self.server
-        socket=self.request
-        threading.Thread(target=P2PScoket,name="Socket",args=(socket,server,client_address,)).start()
+        client_address = self.client_address
+        server = self.server
+        socket = self.request
+        ServerThread = threading.Thread(target=P2PScoket,name="Socket",args=(socket,server,client_address,))
+        ServerThread.daemon = True
+        ServerThread.start()
         while True:
             time.sleep(1)
+    @staticmethod
+    def joinNetwork(sock):
+        client_address=["No","No"]
+        server=["No"]
+        socket=sock
+        ClientThread=threading.Thread(target=P2PScoket,name="Client",args=(socket,server,client_address,))
+        ClientThread.daemon=True
+        ClientThread.start()
+        while True:
+            time.sleep(1)
+
         
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
@@ -93,4 +108,11 @@ def P2PNetworkStart():
     checkAlive.daemon = True
     checkAlive.start()
 
-        
+
+def P2PJoinStart(node):
+    sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(node)
+
+    ClientThread=threading.Thread(target=SocketHandle.joinNetwork,args=(sock,))
+    ClientThread.start()
+    
