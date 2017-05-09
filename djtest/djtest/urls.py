@@ -18,8 +18,12 @@ from django.contrib import admin
 from p2p_web import views as p2p_web_views
 urlpatterns = [
     url(r'^$', p2p_web_views.index),
-    url(r'^test/', p2p_web_views.test, name='home'),
-    url(r'^add/', p2p_web_views.add, name='add'),
-    url(r'^add2/(\d+)/(\d+)/', p2p_web_views.add2, name='add2'),
+    url(r'^Query/?$', p2p_web_views.Query),
+    url(r'^QueryNode/?$', p2p_web_views.QueryNode),
+    url(r'^Tx/?$', p2p_web_views.Tx),
+    url(r'^reload/?$', p2p_web_views.reload_urls),
+    url(r'^test/?$', p2p_web_views.test, name='home'),
+    url(r'^add/?$', p2p_web_views.add, name='add'),
+    url(r'^add2/(\d+)/(\d+)/?$', p2p_web_views.add2, name='add2'),
     url(r'^admin/', admin.site.urls),
 ]
