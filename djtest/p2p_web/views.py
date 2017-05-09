@@ -3,6 +3,7 @@ import os
 from django.shortcuts import render
 from django.http import HttpResponse
 from blockchain.p2p import p2p
+from blockchain.transaction import transaction
 from blockchain.enum import *
 ##reload ROOT_URLCONF
 import sys
@@ -19,13 +20,15 @@ def reload_urls(request, urlconf=None):
     return HttpResponse('urlconf reloaded')
 
 def Tx(request):
-    return HttpResponse("")
+    transaction.newTx(request.body)
+    return HttpResponse(request.body)
 
 def Query(request):
     return HttpResponse("")
 
 def QueryNode(request):
     return HttpResponse(p2p.P2PScoket.getClient())
+
 def JoinNode(request):
     p2p.P2PJoinStart((request.GET.get('ip','127.0.0.1'),int(request.GET.get('port','8001'))))
     return HttpResponse("addNode")
