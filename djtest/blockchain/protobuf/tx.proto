@@ -1,0 +1,12 @@
+message Tx{
+    optional string chain = 1;
+    required uint64 timestamp=2;
+    required string value=3;
+    optional string hash=4;
+    message sign{
+        required string public=1;
+        required string sing=2;
+        optional sign nextsing=3;
+    }
+    optional sign checkers=5;
+}

@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from blockchain.p2p import p2p
 from blockchain.transaction import transaction
+from blockchain.message import message as  message_module
 from blockchain.enum import *
 ##reload ROOT_URLCONF
 import sys
@@ -20,7 +21,9 @@ def reload_urls(request, urlconf=None):
     return HttpResponse('urlconf reloaded')
 
 def Tx(request):
-    transaction.newTx(request.body)
+    tx=transaction.Tx()
+    tx.create(request.body)
+    message_module.Message.send(MESSAGE_TRANSACTION,tx.tx_serialize)
     return HttpResponse(request.body)
 
 def Query(request):

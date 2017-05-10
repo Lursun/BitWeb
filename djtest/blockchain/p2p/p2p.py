@@ -6,6 +6,7 @@ import time
 from blockchain.enum import *
 from struct import *
 from pprint import pprint
+from blockchain.message import message as message_module
 
 class P2PScoket:
     sockets=[]
@@ -15,14 +16,14 @@ class P2PScoket:
         while True:
             for sock in P2PScoket.s:
                 try:
-                    sock.send("Are you still alive?")
+                    pass #sock.send("Are you still alive?")
                 except:
                     sock.delsocket()
             time.sleep(3);
     @staticmethod
     def broadcast(message):
         for socket in P2PScoket.s:
-            socket.send(socket,message)
+            socket.send(message)
 
     @staticmethod
     def getClient():
@@ -39,20 +40,15 @@ class P2PScoket:
         self.socket=socket
         self.server=server
         self.client_address=client_address
-        P2PScoket.sockets.append(self.server)
+        P2PScoket.sockets.append(self.socket)
         P2PScoket.s.append(self)
         recvThread=threading.Thread(target=self.recv,name="recv Thread")
-        recvThread.daemon = True
         recvThread.start()
         print 'connect'
     def recv(self):
         while True:
-            try:
-                data=self.socket.recv(1024)
-                print data
-                print self.client_address
-            except:
-                pass
+            message_module.Message.recv(self.socket)
+            
 
     def send(self,message):
         self.socket.send(message)
@@ -68,7 +64,7 @@ class SocketHandle(SocketServer.BaseRequestHandler):
         server = self.server
         socket = self.request
         ServerThread = threading.Thread(target=P2PScoket,name="Socket",args=(socket,server,client_address,))
-        ServerThread.daemon = True
+
         ServerThread.start()
         while True:
             time.sleep(1)
@@ -78,7 +74,7 @@ class SocketHandle(SocketServer.BaseRequestHandler):
         server=["No"]
         socket=sock
         ClientThread=threading.Thread(target=P2PScoket,name="Client",args=(socket,server,client_address,))
-        ClientThread.daemon=True
+
         ClientThread.start()
         while True:
             time.sleep(1)
@@ -102,10 +98,10 @@ def P2PNetworkStart():
     if type(PORT)==str:
         server=ThreadedTCPServer(("0.0.0.0",int(PORT)),SocketHandle)
     server_thread = threading.Thread(target=server.serve_forever)
-    server_thread.daemon = True
+
     server_thread.start()
     checkAlive = threading.Thread(target=P2PScoket.checkAlive,name="checkAlive")
-    checkAlive.daemon = True
+
     checkAlive.start()
 
 
