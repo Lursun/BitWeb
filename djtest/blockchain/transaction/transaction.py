@@ -10,9 +10,11 @@ class Tx:
         pass
     def create(self,message):
         pb2=tx_pb2.Tx()
-        pb2.chain="admin_chain"
+        pb2.channel="admin_channel"
         pb2.timestamp=int(time.time())
+        pb2.type=TX_TYPE_TEST
         pb2.value=message
+        pb2.version=1
         pb2.hash=""
         temp=pb2.SerializeToString()
         pb2.hash=hashlib.sha256(temp).hexdigest()

@@ -1,0 +1,11 @@
+message Block{
+    required string sign=1;
+    required uint32 version=2;
+    required string channel=3;
+    required string previoushash=4;
+    required string blockhash=5;
+    required string nexthash=6;
+    required uint64 timestamp=7;
+    required string difficulty=8;
+    required bytes data=9;
+}

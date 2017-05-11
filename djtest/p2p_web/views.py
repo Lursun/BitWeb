@@ -25,6 +25,11 @@ def Tx(request):
     tx.create(request.body)
     message_module.Message.send(MESSAGE_TRANSACTION,tx.tx_serialize)
     return HttpResponse(request.body)
+def QueryBlock(request):
+    return HttpResponse("")
+
+def QueryTx(request):
+    return HttpResponse("")
 
 def Query(request):
     return HttpResponse("")
@@ -37,7 +42,6 @@ def JoinNode(request):
     return HttpResponse("addNode")
 
 def index(request):
-    print (request.body)
     return HttpResponse(p2p.P2PScoket.getClient())
     
 def add(request):

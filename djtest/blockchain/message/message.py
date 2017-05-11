@@ -6,8 +6,8 @@ from blockchain.transaction import transaction
 
 class Message:
     @staticmethod
-    def recv(socket):
-        data=socket.recv(1024)
+    def recv(sock):
+        data=sock.socket.recv(1024)
         try:
             msg=message_pb2.Message()
             msg.ParseFromString(data) 
@@ -16,17 +16,19 @@ class Message:
                 tx=transaction.Tx()
                 if tx.getTx(msg.body):
                     print "GET new Tx"
-                    p2p_module.p2p.P2PScoket.broadcast(data)
+                    sock.passBroadcast(data)
                 else:
                     print ":)"
-        except:
-            pass
+        except Exception as e:
+            print e
+
     
     @staticmethod
     def send(msg_type,body):
         pb2=message_pb2.Message()
         pb2.type=msg_type
         pb2.body=body
+        pb2.version=1
         message=pb2.SerializeToString()
         p2p_module.p2p.P2PScoket.broadcast(message)
         

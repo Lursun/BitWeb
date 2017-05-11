@@ -24,6 +24,10 @@ class P2PScoket:
     def broadcast(message):
         for socket in P2PScoket.s:
             socket.send(message)
+    def passBroadcast(self,message):
+        for socket in P2PScoket.s:
+            if not self==socket:
+                socket.send(message)
 
     @staticmethod
     def getClient():
@@ -47,7 +51,7 @@ class P2PScoket:
         print 'connect'
     def recv(self):
         while True:
-            message_module.Message.recv(self.socket)
+            message_module.Message.recv(self)
             
 
     def send(self,message):
