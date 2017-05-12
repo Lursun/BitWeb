@@ -1,12 +1,19 @@
+message Package{
+    required uint32 version=1;
+    required float timestamp=2;
+    required string difficulty=3;
+    repeated string blockhashs=4;
+    required bytes answer=5;
+    required string packagehash=6;
+    
+}
 message Block{
-    required string uuid=1;
-    required string height=2;
-    required uint32 version=3;
-    required string channel=4;
+    required bytes height=1;
+    required uint32 version=2;
+    required string circle=3;
+    repeated string txhashs=4;
     required string previoushash=5;
     required string blockhash=6;
     required string nexthash=7;
-    required uint64 timestamp=8;
-    required string difficulty=9;
-    repeated string txuuid=10 ;
+    required string packagehash=8;   
 }

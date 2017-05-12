@@ -22,10 +22,10 @@ def reload_urls(request, urlconf=None):
 
 def Tx(request):
     tx=transaction.Tx()
-    tx.create(TX_TYPE_TEST,request.body)
+    tx.create(TX_TYPE_TEST,"management_circel",request.body)
     message_module.Message.send(MESSAGE_RESPONSE_TX,tx.tx_serialize)
     return HttpResponse(request.body)
-    
+
 def QueryBlock(request):
     return HttpResponse("")
 

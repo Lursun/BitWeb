@@ -10,10 +10,10 @@ class Tx:
     tx_pool=set()
     def __init__(self):
         pass
-    def create(self,txtype,message):
+    def create(self,txtype,circle,message):
         pb2=tx_pb2.Tx()
         pb2.uuid=str(uuid1())
-        pb2.channel="management_channel"
+        pb2.circle=circle
         pb2.timestamp=int(time.time())
         pb2.type=txtype
         pb2.value=message
@@ -21,6 +21,7 @@ class Tx:
         pb2.hash=""
         temp=pb2.SerializeToString()
         pb2.hash=hashlib.sha256(temp).hexdigest()
+        Tx.tx_pool.add(pb2.hash)
         self.tx_serialize=pb2.SerializeToString()
     @staticmethod
     def findhash(hashvalue):
