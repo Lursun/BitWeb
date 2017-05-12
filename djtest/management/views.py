@@ -25,6 +25,7 @@ def Tx(request):
     tx.create(TX_TYPE_TEST,request.body)
     message_module.Message.send(MESSAGE_RESPONSE_TX,tx.tx_serialize)
     return HttpResponse(request.body)
+    
 def QueryBlock(request):
     return HttpResponse("")
 
