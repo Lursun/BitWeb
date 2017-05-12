@@ -26,9 +26,9 @@ class Message:
     @staticmethod
     def send(msg_type,body):
         pb2=message_pb2.Message()
-        pb2.type=msg_type
-        pb2.body=body
         pb2.version=1
+        pb2.type=msg_type
+        pb2.body.append(body)
         message=pb2.SerializeToString()
         p2p_module.p2p.P2PScoket.broadcast(message)
         
