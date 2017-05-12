@@ -23,7 +23,7 @@ def reload_urls(request, urlconf=None):
 def Tx(request):
     tx=transaction.Tx()
     tx.create(TX_TYPE_TEST,request.body)
-    message_module.Message.send(MESSAGE_TRANSACTION,tx.tx_serialize)
+    message_module.Message.send(MESSAGE_REQUEST_TX,tx.tx_serialize)
     return HttpResponse(request.body)
 def QueryBlock(request):
     return HttpResponse("")

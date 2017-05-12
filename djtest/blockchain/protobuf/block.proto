@@ -1,6 +1,5 @@
-
 message Block{
-    required string sign=1;
+    required string uuid=1;
     required string height=2;
     required uint32 version=3;
     required string channel=4;
@@ -9,5 +8,5 @@ message Block{
     required string nexthash=7;
     required uint64 timestamp=8;
     required string difficulty=9;
-    repeated string txhash=10 ;
+    repeated string txuuid=10 ;
 }

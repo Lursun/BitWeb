@@ -12,7 +12,7 @@ class Message:
             msg=message_pb2.Message()
             msg.ParseFromString(data) 
             print msg.body
-            if msg.type == MESSAGE_TRANSACTION :
+            if msg.type == MESSAGE_RESPONSE_TX :
                 tx=transaction.Tx()
                 if tx.getTx(msg.body):
                     print "GET new Tx"
@@ -28,7 +28,7 @@ class Message:
         pb2=message_pb2.Message()
         pb2.version=1
         pb2.type=msg_type
-        pb2.body.append(body)
+        pb2.body=body
         message=pb2.SerializeToString()
         p2p_module.p2p.P2PScoket.broadcast(message)
         
