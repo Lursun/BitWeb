@@ -12,15 +12,6 @@ class P2PScoket:
     sockets=[]
     s=[]
     @staticmethod
-    def checkAlive():
-        while True:
-            for sock in P2PScoket.s:
-                try:
-                    pass #sock.send("Are you still alive?")
-                except:
-                    sock.delsocket()
-            time.sleep(3);
-    @staticmethod
     def broadcast(message):
         for socket in P2PScoket.s:
             socket.send(message)
@@ -87,26 +78,25 @@ class SocketHandle(SocketServer.BaseRequestHandler):
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
 def P2PNetworkStart():
-    PORT=Node=""
+    PORT=NODE=""
     try:
-        PORT=os.environ["P2P_CONNECT"]
+        NODE=os.environ.get["P2P_CONNECT"]
     except:
         pass
     try:
-        PORT=os.environ["P2P_PORT"]
+        PORT=os.environ.get["P2P_PORT","8001"]
     except:
         PORT=8001
     print("p2p listen port:"+str(PORT))
+
     if type(PORT)==int:
         server=ThreadedTCPServer(("0.0.0.0",PORT),SocketHandle)
     if type(PORT)==str:
         server=ThreadedTCPServer(("0.0.0.0",int(PORT)),SocketHandle)
     server_thread = threading.Thread(target=server.serve_forever)
-
     server_thread.start()
-    checkAlive = threading.Thread(target=P2PScoket.checkAlive,name="checkAlive")
 
-    checkAlive.start()
+
 
 
 def P2PJoinStart(node):
