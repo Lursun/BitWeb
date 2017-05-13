@@ -1,12 +1,4 @@
-message Package{
-    required uint32 version=1;
-    required float timestamp=2;
-    required string difficulty=3;
-    repeated string blockhashs=4;
-    required bytes answer=5;
-    required string packagehash=6;
-    
-}
+
 message Block{
     required bytes height=1;
     required uint32 version=2;

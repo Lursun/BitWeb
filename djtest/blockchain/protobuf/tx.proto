@@ -5,10 +5,11 @@ message Tx{
     required float timestamp=4;
     required bytes value=5;
     optional string previoushash=6;
-    optional string hash=7;
+    optional string txhash=7;
+    optional string nexthash=8;
     message sign{
         required bytes public=1;
         required bytes sing=2;
     }
-    repeated sign checkers=8 ;
+    repeated sign checkers=9 ;
 }

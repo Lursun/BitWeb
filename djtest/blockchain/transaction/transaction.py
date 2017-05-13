@@ -12,16 +12,15 @@ class Tx:
         pass
     def create(self,txtype,circle,message):
         pb2=tx_pb2.Tx()
-        pb2.uuid=str(uuid1())
         pb2.circle=circle
         pb2.timestamp=int(time.time())
         pb2.type=txtype
         pb2.value=message
         pb2.version=1
-        pb2.hash=""
+        pb2.txhash=""
         temp=pb2.SerializeToString()
-        pb2.hash=hashlib.sha256(temp).hexdigest()
-        Tx.tx_pool.add(pb2.hash)
+        pb2.txhash=hashlib.sha256(temp).hexdigest()
+        #Tx.tx_pool.add(pb2.txhash)
         self.tx_serialize=pb2.SerializeToString()
     @staticmethod
     def findhash(hashvalue):
@@ -33,7 +32,7 @@ class Tx:
     def checkhash(serialize):
         pb2=tx_pb2.Tx()
         pb2.ParseFromString(serialize)
-        hashvalue,pb2.hash=pb2.hash,""
+        hashvalue,pb2.txhash=pb2.txhash,""
         temp=pb2.SerializeToString()
         if hashvalue==hashlib.sha256(temp).hexdigest():
             return True
@@ -49,12 +48,12 @@ class Tx:
     def getTx(self,serialize):
         pb2=tx_pb2.Tx()
         pb2.ParseFromString(serialize)
-        if Tx.findhash(pb2.hash):
+        if Tx.findhash(pb2.txhash):
             return False
         if not Tx.checkhash(serialize):
             return False
         self.tx_serialize=serialize
-        Tx.tx_pool.add(pb2.hash)
+        Tx.tx_pool.add(pb2.txhash)
         return True
     @staticmethod
     def getTxPool():

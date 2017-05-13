@@ -21,7 +21,7 @@ class P2PScoket:
                 socket.send(message)
 
     @staticmethod
-    def getClient():
+    def getNode():
         output=''
         for sock in P2PScoket.s:
             try:
@@ -42,7 +42,11 @@ class P2PScoket:
         print 'connect'
     def recv(self):
         while True:
-            message_module.Message.recv(self)
+            try:
+                message_module.Message.recv(self)
+            except:
+                self.delsocket()
+                break
             
 
     def send(self,message):
@@ -64,9 +68,9 @@ class SocketHandle(SocketServer.BaseRequestHandler):
         while True:
             time.sleep(1)
     @staticmethod
-    def joinNetwork(sock):
-        client_address=["No","No"]
-        server=["No"]
+    def joinNetwork(sock,node):
+        client_address=[node[0],node[1]]
+        server=[node]
         socket=sock
         ClientThread=threading.Thread(target=P2PScoket,name="Client",args=(socket,server,client_address,))
 
@@ -103,6 +107,6 @@ def P2PJoinStart(node):
     sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(node)
 
-    ClientThread=threading.Thread(target=SocketHandle.joinNetwork,args=(sock,))
+    ClientThread=threading.Thread(target=SocketHandle.joinNetwork,args=(sock,node))
     ClientThread.start()
     

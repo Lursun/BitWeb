@@ -25,6 +25,8 @@ def Tx(request):
     tx.create(TX_TYPE_TEST,"management_circel",request.body)
     message_module.Message.send(MESSAGE_RESPONSE_TX,tx.tx_serialize)
     return HttpResponse(request.body)
+def QueryPackage(request):
+    return HttpResponse("")
 
 def QueryBlock(request):
     return HttpResponse("")
@@ -36,7 +38,7 @@ def Query(request):
     return HttpResponse("")
 
 def QueryNode(request):
-    return HttpResponse(p2p.P2PScoket.getClient())
+    return HttpResponse(p2p.P2PScoket.getNode())
 
 def JoinNode(request):
     p2p.P2PJoinStart((request.GET.get('ip','127.0.0.1'),int(request.GET.get('port','8001'))))
