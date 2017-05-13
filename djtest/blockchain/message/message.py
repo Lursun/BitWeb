@@ -14,7 +14,7 @@ class Message:
             print msg.body
             if msg.type == MESSAGE_RESPONSE_TX :
                 tx=transaction.Tx()
-                if tx.getTx(msg.body):
+                if tx.addTx(msg.body):
                     print "GET new Tx"
                     sock.passBroadcast(data)
                 else:

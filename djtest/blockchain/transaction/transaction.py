@@ -7,7 +7,7 @@ from blockchain.protobuf import tx_pb2
 from blockchain.enum import *
 
 class Tx:
-    tx_pool=set()
+    tx_pool=dict()
     def __init__(self):
         pass
     def create(self,txtype,circle,message):
@@ -20,14 +20,11 @@ class Tx:
         pb2.txhash=""
         temp=pb2.SerializeToString()
         pb2.txhash=hashlib.sha256(temp).hexdigest()
-        #Tx.tx_pool.add(pb2.txhash)
         self.tx_serialize=pb2.SerializeToString()
+        Tx.tx_pool[pb2.txhash]=self
     @staticmethod
     def findhash(hashvalue):
-        try:
-            return hashvalue in Tx.tx_pool
-        except:
-            return -1
+        return Tx.tx_pool.has_key(hashvalue)
     @staticmethod
     def checkhash(serialize):
         pb2=tx_pb2.Tx()
@@ -45,7 +42,7 @@ class Tx:
     def sign(self):
         pass
     ####
-    def getTx(self,serialize):
+    def addTx(self,serialize):
         pb2=tx_pb2.Tx()
         pb2.ParseFromString(serialize)
         if Tx.findhash(pb2.txhash):
@@ -53,18 +50,14 @@ class Tx:
         if not Tx.checkhash(serialize):
             return False
         self.tx_serialize=serialize
-        Tx.tx_pool.add(pb2.txhash)
+        Tx.tx_pool[pb2.txhash]=self
         return True
     @staticmethod
+    def getTx(txhash):
+        tx=Tx.tx_pool[txhash]
+        pb2=tx_pb2.Tx()
+        pb2.ParseFromString(tx.tx_serialize)
+        return pb2
+    @staticmethod
     def getTxPool():
-        ret_tx_pool=Tx.tx_pool
-        tx_pool=set()
-        for tx in ret_tx_pool:
-            if not Tx.checkhash(tx):
-                ret_tx_pool.remove(tx)
-            if not (tx.checksign>1):
-                tx_pool.add(tx)
-                ret_tx_pool.remove(tx)
-        #####待做
-        
-        return ret_tx_pool
+        return Tx.tx_pool.keys()

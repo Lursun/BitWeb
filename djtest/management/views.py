@@ -10,6 +10,10 @@ from blockchain.enum import *
 import sys
 from django.conf import settings
 
+from blockchain.circle import circle
+from blockchain.block import block
+from blockchain.transaction import transaction
+
 #print open(os.path.dirname(__file__)+"/../circlelist").read()
 
 
@@ -28,11 +32,25 @@ def Tx(request):
 def QueryPackage(request):
     return HttpResponse("")
 
+def QueryCircles(request):
+    circleid=request.GET.get("circleid","management_circle")
+    return HttpResponse(circle.Circles.circleslist)
+
+def QueryBlocks(request):
+    circleid=request.GET.get("circleid","management_circle")
+    return HttpResponse(circle.Circles.getCircle(circleid).blocklist)
+
 def QueryBlock(request):
-    return HttpResponse("")
+    circleid=request.GET.get("circleid","management_circle")
+    blockhash=request.GET.get("blockhash","")
+    return HttpResponse(circle.Circles.getCircle(circleid).getBlock(blockhash))
+
+def QueryTxs(request):
+    return HttpResponse(transaction.Tx.getTxPool())
 
 def QueryTx(request):
-    return HttpResponse("")
+    txhash=request.GET.get("txhash","")
+    return HttpResponse(transaction.Tx.getTx(txhash))
 
 def Query(request):
     return HttpResponse("")

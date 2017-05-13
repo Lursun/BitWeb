@@ -20,8 +20,14 @@ reload(management_views)
 
 urlpatterns = [
     url(r'^$', management_views.index),
-    url(r'^Query/?$', management_views.Query),
+    url(r'^Query/?$', management_views.QueryTx),
+    url(r'^QueryBlocks/?$', management_views.QueryBlocks),
+    url(r'^QueryBlock/?$', management_views.QueryBlock),
+    url(r'^QueryCircles/?$', management_views.QueryCircles),
+    url(r'^QueryPackage/?$', management_views.QueryPackage),
     url(r'^QueryNode/?$', management_views.QueryNode),
+    url(r'^QueryTxs/?$', management_views.QueryTxs),
+    url(r'^QueryTx/?$', management_views.QueryTx),
     url(r'^JoinNode/?$', management_views.JoinNode),
     url(r'^Tx/?$', management_views.Tx),
     url(r'^reload/?$', management_views.reload_urls),
