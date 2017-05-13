@@ -10,7 +10,7 @@ from blockchain.enum import *
 import sys
 from django.conf import settings
 
-
+#print open(os.path.dirname(__file__)+"/../circlelist").read()
 
 
 def reload_urls(request, urlconf=None):
