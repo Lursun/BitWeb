@@ -2,10 +2,10 @@
 message Block{
     required bytes height=1;
     required uint32 version=2;
-    required string circle=3;
+    required string chainid=3;
     repeated string txhashs=4;
     required string previoushash=5;
     required string blockhash=6;
     required string nexthash=7;
-    required string packagehash=8;   
+    optional string packagehash=8;   
 }

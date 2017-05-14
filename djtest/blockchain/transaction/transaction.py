@@ -9,17 +9,17 @@ from blockchain.enum import *
 class Tx:
     tx_pool=dict()
     def __init__(self):
-        pass
-    def create(self,txtype,circle,message):
+        self.checkers=[]
+    def create(self,txtype,chainid,message):
         pb2=tx_pb2.Tx()
-        pb2.circle=circle
-        pb2.timestamp=int(time.time())
-        pb2.type=txtype
-        pb2.value=message
-        pb2.version=1
+        self.chainid=pb2.chainid=chainid
+        self.timestamp=pb2.timestamp=int(time.time())
+        self.type=pb2.type=txtype
+        self.value=pb2.value=message
+        self.version=pb2.version=1
         pb2.txhash=""
         temp=pb2.SerializeToString()
-        pb2.txhash=hashlib.sha256(temp).hexdigest()
+        self.txHash=pb2.txhash=hashlib.sha256(temp).hexdigest()
         self.tx_serialize=pb2.SerializeToString()
         Tx.tx_pool[pb2.txhash]=self
     @staticmethod
@@ -51,13 +51,23 @@ class Tx:
             return False
         self.tx_serialize=serialize
         Tx.tx_pool[pb2.txhash]=self
+
+        self.chainid=pb2.chainid
+        self.version=pb2.version
+        self.type=pb2.type
+        self.timestamp=pb2.timestamp
+        self.value=pb2.value
+        self.txHash=pb2.txhash
+        self.checkers.extend(pb2.checkers)
         return True
     @staticmethod
     def getTx(txhash):
-        tx=Tx.tx_pool[txhash]
-        pb2=tx_pb2.Tx()
-        pb2.ParseFromString(tx.tx_serialize)
-        return pb2
+        return Tx.tx_pool[txhash]
+
     @staticmethod
     def getTxPool():
-        return Tx.tx_pool.keys()
+        return Tx.tx_pool
+
+    @staticmethod
+    def clearTxPool():
+        Tx.tx_pool=dict()

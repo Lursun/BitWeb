@@ -8,9 +8,9 @@ from blockchain.protobuf import tx_pb2
 
 
 firstTx=tx_pb2.Tx()
-firstTx.circle="management_circel"
+firstTx.chain="management_chain"
 firstTx.version=1
-firstTx.type=TX_TYPE_CREATE_CIRCLE
+firstTx.type=TX_TYPE_CREATE_CHAIN
 firstTx.timestamp=0
 firstTx.value="Bitweb:台灣 盧瑞山教授區塊鏈實驗室 之 研究員：唐林竩，所開發"
 firstTx.previoushash="GENESIS TX"
@@ -20,7 +20,7 @@ firstTx.txhash=hashlib.sha256(temp).hexdigest()
 firstBlock=block_pb2.Block()
 firstBlock.height='0'
 firstBlock.version=1
-firstBlock.circle="management_circel"
+firstBlock.chain="management_chain"
 firstBlock.txhashs.append(firstTx.txhash)
 firstBlock.previoushash="GENESIS BLOCK"
 firstBlock.blockhash=""

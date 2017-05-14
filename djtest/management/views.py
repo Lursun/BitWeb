@@ -10,11 +10,11 @@ from blockchain.enum import *
 import sys
 from django.conf import settings
 
-from blockchain.circle import circle
-from blockchain.block import block
+from blockchain.chain import chain
+from blockchain.block import blocks
 from blockchain.transaction import transaction
 
-#print open(os.path.dirname(__file__)+"/../circlelist").read()
+#print open(os.path.dirname(__file__)+"/../chainlist").read()
 
 
 def reload_urls(request, urlconf=None):
@@ -26,24 +26,24 @@ def reload_urls(request, urlconf=None):
 
 def Tx(request):
     tx=transaction.Tx()
-    tx.create(TX_TYPE_TEST,"management_circel",request.body)
+    tx.create(TX_TYPE_TEST,"management_chain",request.body)
     message_module.Message.send(MESSAGE_RESPONSE_TX,tx.tx_serialize)
     return HttpResponse(request.body)
 def QueryPackage(request):
     return HttpResponse("")
 
-def QueryCircles(request):
-    circleid=request.GET.get("circleid","management_circle")
-    return HttpResponse(circle.Circles.circleslist)
+def QueryChains(request):
+    chainid=request.GET.get("chainid","management_chain")
+    return HttpResponse(chain.Chains.chainslist)
 
 def QueryBlocks(request):
-    circleid=request.GET.get("circleid","management_circle")
-    return HttpResponse(circle.Circles.getCircle(circleid).blocklist)
+    chainid=request.GET.get("chainid","management_chain")
+    return HttpResponse(chain.Chains.getChain(chainid).blocklist)
 
 def QueryBlock(request):
-    circleid=request.GET.get("circleid","management_circle")
+    chainid=request.GET.get("chainid","management_chain")
     blockhash=request.GET.get("blockhash","")
-    return HttpResponse(circle.Circles.getCircle(circleid).getBlock(blockhash))
+    return HttpResponse(chain.Chains.getChain(chainid).getBlock(blockhash))
 
 def QueryTxs(request):
     return HttpResponse(transaction.Tx.getTxPool())

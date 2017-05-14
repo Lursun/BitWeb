@@ -1,15 +1,13 @@
 message Tx{
-    required string circle = 1;
+    required string chainid = 1;
     required uint32 version = 2;
     required uint32 type=3;
     required float timestamp=4;
     required bytes value=5;
-    optional string previoushash=6;
     optional string txhash=7;
-    optional string nexthash=8;
     message sign{
         required bytes public=1;
         required bytes sing=2;
     }
-    repeated sign checkers=9 ;
+    repeated sign checkers=8 ;
 }
