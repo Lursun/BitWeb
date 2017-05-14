@@ -5,4 +5,5 @@ message Package{
     repeated string blockhashs=4;
     required bytes answer=5;
     required string packagehash=6;
+    required string nexthash=7;
 }

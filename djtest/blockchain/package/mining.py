@@ -7,24 +7,26 @@ from blockchain.protobuf import block_pb2
 from blockchain.protobuf import package_pb2
 from blockchain.protobuf import tx_pb2
 import time
-
+import random
+import hashlib
 REMINING=False
 def mining():
-    REMINING=False
-    while True
+    
+    while True:
+        newPackage=package.Package()
+        newPackage.bale()
         start=time.time()
-        firstPackage.version=1
-        firstPackage.timestamp=time.time()
         while not REMINING:
-            Package.answer=str(random.random())
-            time1m=firstPackage.SerializeToString()
+            newPackage.setAnswer(str(random.random()))
+            time1m=newPackage.ToSerialize()
             out=hashlib.sha512(time1m).hexdigest()
-            if int(out,16) < int(firstPackage.difficulty,16):
+            if int(out,16) < int(newPackage.difficulty,16):
                 break
         end=time.time()
         print out
-        print firstPackage.answer
-        firstPackage.packagehash=out
+        print newPackage.answer
+        newPackage.setPackageHash(out)
+        newPackage.ToSerialize()
+        package.Package.packages.append(newPackage)
         print("end",end-start)
-        firstBlock.packagehash=firstPackage.packagehash
     

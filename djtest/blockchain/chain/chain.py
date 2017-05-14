@@ -17,7 +17,8 @@ class Chain:
         self.firstblock=NOTFOUND
 
     def addBlock(self,block):
-        self.blocklist[block.blockhash]=block
+        len(self.blocklist)==0 if self.setFirst(block) else False
+        self.blocklist[block.blockHash]=block
         return self
 
     def getBlock(self,blockhash):

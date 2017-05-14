@@ -21,7 +21,7 @@ class Block :
         lastBlock=selfChain.getLast()
         
         if lastBlock!=False:
-            self.previousHash=lastBlock.blockhash
+            self.previousHash=lastBlock.blockHash
         else:
             self.previousHash="GENESIS BLOCK"
         
