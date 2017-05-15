@@ -31,12 +31,14 @@ class Package :
         pb2.nexthash=""
         return pb2.SerializeToString()
     def setPackageHash(self,packageHash):
+
         self.packageHash=packageHash
     def setAnswer(self,answer):
+
         self.answer=answer
     def getDifficulty(self):
         if len(Package.packages)<100:
-            return '4269747765620ae9968be799bcefbc9ae59490e69e97e7aba9284c696e2d59692054616e672920206c757273756e39313430313340676d61696c2e636f6d'
+            return 'ffff4269747765620ae9968be799bcefbc9ae59490e69e97e7aba9284c696e2d59692054616e672920206c757273756e39313430313340676d61696c2e636f6d'
         else:
             """
             需更改
@@ -46,7 +48,11 @@ class Package :
         newBlock=block.Block()
         newBlock.create("management_chain")
         newBlock.putTxs(transaction.Tx.getTxPool())
-        newBlock.ToSerialize()
-        chain.Chains.getChain("management_chain").addBlock(newBlock)
+        transaction.Tx.clearTxPool()
+        newBlock.SerializeOfbale()
+        nowChain=chain.Chains.getChain("management_chain")
+        if newBlock.getHeight()>1:
+            nowChain.getLast().setNextHash( newBlock.getBlockHash() )
+        nowChain.addBlock(newBlock)
         self.blockhashs.append(newBlock.blockHash)
 

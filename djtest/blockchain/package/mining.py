@@ -11,8 +11,9 @@ import random
 import hashlib
 REMINING=False
 def mining():
-    
-    while True:
+    i=5
+    while i>0:
+        i-=1
         newPackage=package.Package()
         newPackage.bale()
         start=time.time()

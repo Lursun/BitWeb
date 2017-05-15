@@ -38,12 +38,24 @@ def QueryChains(request):
 
 def QueryBlocks(request):
     chainid=request.GET.get("chainid","management_chain")
-    return HttpResponse(chain.Chains.getChain(chainid).blocklist)
+    blocklist=chain.Chains.getChain(chainid).blocklist
+    s=""
+    for key in blocklist.keys():
+        s+=key+"\n"
+    return HttpResponse(s)
 
 def QueryBlock(request):
     chainid=request.GET.get("chainid","management_chain")
     blockhash=request.GET.get("blockhash","")
-    return HttpResponse(chain.Chains.getChain(chainid).getBlock(blockhash))
+    block=chain.Chains.getChain(chainid).getBlock(blockhash)
+    s='Height: %d <br>' % block.getHeight()
+    s+='ChainID: %s <br>' % block.getChainID()
+    s+='PreviousHash: %s <br>' % block.getPreviousHash()
+    s+='BlockHash: %s <br>' % block.getBlockHash()
+    s+='NextHash: %s <br>' % block.getNextHash()
+    s+='TxHashs: %s <br>' % block.getTxHashs()
+
+    return HttpResponse(s)
 
 def QueryTxs(request):
     return HttpResponse(transaction.Tx.getTxPool())

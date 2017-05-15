@@ -34,7 +34,7 @@ class Block :
             self.txhashs.append(tx)
         self.txs=txs
         return self
-    def ToSerialize(self):
+    def SerializeOfbale(self):
         pb2=block_pb2.Block()
         pb2.height=hex(self.height)
         pb2.version=self.version
@@ -61,4 +61,23 @@ class Block :
         get nexthash
         """
         return self.nextHash
-            
+    def setNextHash(self,nexthash):
+        self.nextHash=nexthash
+
+    def getHeight(self):
+        return self.height
+
+    def getPreviousHash(self):
+        return self.previousHash
+
+    def getBlockHash(self):
+        return self.blockHash
+
+    def getChainID(self):
+        return self.chainid
+
+    def getNextHash(self):
+        return self.nextHash
+    
+    def getTxHashs(self):
+        return self.txhashs
