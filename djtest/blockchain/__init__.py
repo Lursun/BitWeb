@@ -11,6 +11,9 @@ from blockchain.block import block
 from blockchain.transaction import transaction
 from blockchain.package import mining
 from blockchain.package import package
+from blockchain.member import member
+lursun=member.Member()
+lursun.signUp("Lursun","最強的工程師：唐林竩")
 
 firstTx=transaction.Tx()
 firstTx.create(TX_TYPE_CREATE_CHAIN,"management_chain","Bitweb:台灣 盧瑞山教授區塊鏈實驗室 之 研究員：唐林竩，所開發")

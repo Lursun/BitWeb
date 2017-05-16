@@ -1,0 +1,7 @@
+message Guesser {
+    required string userid=1;
+    required string version=2;
+    repeated string chainids=3;
+    required string guessvalue=4;
+    required string sign=5;
+}
