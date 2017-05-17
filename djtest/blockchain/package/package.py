@@ -1,6 +1,5 @@
 #coding:utf-8
 from blockchain.enum import *
-import hashlib
 import time
 import random
 from blockchain.protobuf import block_pb2

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import leveldb
-import hashlib
 import time
 from uuid import *
 from blockchain.protobuf import tx_pb2
 from blockchain.enum import *
 from blockchain import method
-method.hash
+from blockchain import implement
+
 class Tx:
     tx_pool=dict()
     def __init__(self):

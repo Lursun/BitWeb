@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import leveldb
-import hashlib
 import time
 from uuid import *
 from blockchain.protobuf import guess_pb2

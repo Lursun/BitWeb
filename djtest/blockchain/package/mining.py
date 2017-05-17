@@ -8,7 +8,6 @@ from blockchain.protobuf import package_pb2
 from blockchain.protobuf import tx_pb2
 import time
 import random
-import hashlib
 REMINING=False
 def mining():
     i=5
