@@ -4,8 +4,7 @@ u"""
 """
 from blockchain.protobuf import block_pb2
 from blockchain.chain import chain
-import hashlib
-
+from blockchain import method
 class Block :
     def __init__(self):
         self.txs=dict()
@@ -45,7 +44,7 @@ class Block :
         pb2.nexthash=""
         pb2.packagehash=""
         temp=pb2.SerializeToString()
-        pb2.blockhash=hashlib.sha256(temp).hexdigest()
+        pb2.blockhash=method.hash(temp)
         self.blockHash=pb2.blockhash
         return pb2.SerializeToString()
     def isNext(self):

@@ -6,9 +6,9 @@ from uuid import *
 from blockchain.protobuf import guess_pb2
 from blockchain.enum import *
 from blockchain.member import member
-
+from blockchain import method
 class Guess:
-    guess_pool=dict()
+    guessPool=dict()
     def __init__(self):
         self.chainids=[]
         pass
@@ -17,12 +17,12 @@ class Guess:
         self.userid="Lursun"
         self.version="1"
         self.chainids.extend(chainids)
-        self.guessvalue=hashlib.sha256(str(time.time())).hexdigest()
+        self.guessvalue=method.hash(str(time.time()))
         self.sign=member.Member.private.sign(self.guessvalue)
-        Guess.guess_pool[hashlib.sha256(sign).hexdigest()]=self
+        Guess.guessPool[method.hash(sign)]=self
         return self
     def getSerialize(hashvalue):
-        Guess.guess_pool[hashvalue]
+        Guess.guessPool[hashvalue]
         pb2=guess_pb2.Guesser()
         pb2.userid=self.userid
         pb2.version=self.version
@@ -39,7 +39,7 @@ class Guess:
         pb2.ParseFromString(serialize)
         hashvalue,pb2.txhash=pb2.txhash,""
         temp=pb2.SerializeToString()
-        if hashvalue==hashlib.sha256(temp).hexdigest():
+        if hashvalue== method.hash(temp):
             return True
         else:
             return False

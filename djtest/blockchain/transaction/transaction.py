@@ -5,7 +5,8 @@ import time
 from uuid import *
 from blockchain.protobuf import tx_pb2
 from blockchain.enum import *
-
+from blockchain import method
+method.hash
 class Tx:
     tx_pool=dict()
     def __init__(self):
@@ -19,7 +20,7 @@ class Tx:
         self.version=pb2.version=1
         pb2.txhash=""
         temp=pb2.SerializeToString()
-        self.txHash=pb2.txhash=hashlib.sha256(temp).hexdigest()
+        self.txHash=pb2.txhash=method.hash(temp)
         self.tx_serialize=pb2.SerializeToString()
         Tx.tx_pool[pb2.txhash]=self
     @staticmethod
@@ -31,7 +32,7 @@ class Tx:
         pb2.ParseFromString(serialize)
         hashvalue,pb2.txhash=pb2.txhash,""
         temp=pb2.SerializeToString()
-        if hashvalue==hashlib.sha256(temp).hexdigest():
+        if hashvalue== method.hash(temp):
             return True
         else:
             return False
