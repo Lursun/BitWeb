@@ -10,6 +10,10 @@ class Protobuf:
         return
     
     @abstractmethod
+    def stringToObject(self):
+        return
+    
+    @abstractmethod
     def isHash(self):
         return
     
@@ -21,14 +25,7 @@ class Protobuf:
     def checkHash(self):
         return
 
-class Chain:
-    __metaclass__ = ABCMeta
-    @abstractmethod
-    def create(self):
-        return
-
 class Block(Protobuf):
-    __metaclass__ = ABCMeta
     @abstractmethod
     def getBlock(self):
         """Retrieve data from the input source and return an object."""
@@ -41,21 +38,71 @@ class Block(Protobuf):
     @abstractmethod
     def next(self):
         return
-    
-class Tx(Protobuf):
-    __metaclass__ = ABCMeta
+
     @abstractmethod
-    def getTx(self, input):
-        """Retrieve data from the input source and return an object."""
+    def setNextHash(self,nexthash): 
+        return
+
+    @abstractmethod
+    def getHeight(self):
+        return 
+
+    @abstractmethod
+    def getPreviousHash(self):
+        return 
+
+    @abstractmethod
+    def getBlockHash(self):
+        return 
+
+    @abstractmethod
+    def getChainID(self):
+        return 
+
+    @abstractmethod
+    def getNextHash(self):
+        return 
+
+    @abstractmethod
+    def getTxHashs(self):
+        return 
+
+
+
+class Tx(Protobuf):
+    @abstractmethod
+    def sign(self):
+        """ return dict """
+        return
+
+    @abstractmethod
+    def checkSign(self):
+        """ return dict """
         return
 
 class Message(Protobuf):
-    __metaclass__ = ABCMeta
-    @abstractmethod
-    def getMessage(self, input):
-        """Retrieve data from the input source and return an object."""
-        return
+    pass
 
 class AidBlock(Protobuf):
-    __metaclass__ = ABCMeta
+    pass
+    
+class Guess(Protobuf):
+    pass
 
+
+
+
+
+class Chain:
+    __metaclass__ = ABCMeta
+    @abstractmethod
+    def create(self):
+        return
+
+class Member:
+    __metaclass__ = ABCMeta
+    @abstractmethod
+    def signUp(self):
+        return
+    
+    
