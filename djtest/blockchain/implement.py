@@ -28,7 +28,6 @@ class Protobuf:
 class Block(Protobuf):
     @abstractmethod
     def getBlock(self):
-        """Retrieve data from the input source and return an object."""
         return
     
     @abstractmethod
@@ -100,11 +99,52 @@ class Message(Protobuf):
         return
 
 class AidBlock(Protobuf):
-    pass
+    __metaclass__ = ABCMeta
+    @abstractmethod
+    def getBlock(self):
+        return
     
-class Guess(Protobuf):
-    pass
+    @abstractmethod
+    def isNext(self):
+        return
+    
+    @abstractmethod
+    def next(self):
+        return
 
+    @abstractmethod
+    def setNextHash(self,nexthash): 
+        return
+
+    @abstractmethod
+    def getHeight(self):
+        return 
+
+    @abstractmethod
+    def getPreviousHash(self):
+        return 
+
+    @abstractmethod
+    def getBlockHash(self):
+        return 
+
+    @abstractmethod
+    def getNextHash(self):
+        return 
+
+    @abstractmethod
+    def getGuess(self):
+        return 
+    @abstractmethod
+    def bale(self):
+        return
+
+
+
+class Guess(Protobuf):
+    @abstractmethod
+    def checkSign(self):
+        return
 
 
 

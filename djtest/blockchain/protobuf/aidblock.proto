@@ -3,6 +3,8 @@ message Aidblock{
     required uint32 version=2;
     required uint64 timestamp=3;
     repeated bytes guessers=4;
+    required string difficulty=5;
+    required bytes answer=5;
     required string previoushash=5;
     required string blockhash=6;
     required string nexthash=7;

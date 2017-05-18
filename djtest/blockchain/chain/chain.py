@@ -4,7 +4,9 @@ from blockchain import implement
 class Chains :
     chainslist=dict()
     @staticmethod
-    def setChain(chainid,chain):
+    def addChain(chainid):
+        chain=Chain()
+        chain.create(chainid)
         Chains.chainslist[chainid]=chain
 
     @staticmethod
@@ -13,27 +15,29 @@ class Chains :
 
 class Chain(implement.Chain):
     def __init__(self):
-        self.blocklist=dict()
-        self.firstblock=NOTFOUND
+        self.__blocklist=dict()
+        self.__firstblock=NOTFOUND
+    def create(self,chainid):
+        self.__chainid=chainid
 
-    def addBlock(self,block):
-        if len(self.blocklist)==0:
+    def appendBlock(self,block):
+        if len(self.__blocklist)==0:
             self.setFirst(block)
-        self.blocklist[block.blockHash]=block
+        self.__blocklist[block.getBlockHash()]=block
         return self
 
     def getBlock(self,blockhash):
-        return self.blocklist[blockhash]
+        return self.__blocklist[blockhash]
 
     def getHeight(self):
-        return len(self.blocklist)
+        return len(self.__blocklist)
 
     def setFirst(self,block):
-        self.firstblock=block
+        self.__firstblock=block
         return self
 
     def getFirst(self):
-        return self.firstblock
+        return self.__firstblock
     
     def getLast(self):
         block=self.getFirst()
@@ -42,3 +46,5 @@ class Chain(implement.Chain):
                 block=self.getBlock(block.next())
             return block
         return NOTFOUND
+    def getChainId(self):
+        return self.__chainid
