@@ -3,8 +3,8 @@ from blockchain.protobuf import tx_pb2
 from blockchain.enum import *
 import blockchain.p2p as p2p_module
 from blockchain.transaction import transaction
-
-class Message:
+from blockchain import implement
+class Message(implement.Message):
     @staticmethod
     def recv(sock):
         data=sock.socket.recv(1024)

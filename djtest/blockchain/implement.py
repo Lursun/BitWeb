@@ -72,16 +72,32 @@ class Block(Protobuf):
 class Tx(Protobuf):
     @abstractmethod
     def sign(self):
-        """ return dict """
         return
 
     @abstractmethod
     def checkSign(self):
-        """ return dict """
+        return
+
+    @abstractmethod
+    def setHash(self):
         return
 
 class Message(Protobuf):
-    pass
+    @abstractmethod
+    def send(self):
+        return
+
+    @abstractmethod
+    def recv(self):
+        return
+
+    @abstractmethod
+    def getType(self):
+        return
+
+    @abstractmethod
+    def processing_message(self):
+        return
 
 class AidBlock(Protobuf):
     pass
@@ -104,5 +120,10 @@ class Member:
     @abstractmethod
     def signUp(self):
         return
-    
+    @abstractmethod
+    def decrypto():
+        return
+    @abstractmethod
+    def encrypto():
+        return
     

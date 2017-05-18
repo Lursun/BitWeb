@@ -6,6 +6,7 @@ from blockchain.transaction import transaction
 from blockchain.protobuf import block_pb2
 from blockchain.protobuf import package_pb2
 from blockchain.protobuf import tx_pb2
+from blockchain import method
 import time
 import random
 REMINING=False
@@ -19,7 +20,7 @@ def mining():
         while not REMINING:
             newPackage.setAnswer(str(random.random()))
             time1m=newPackage.ToSerialize()
-            out=hashlib.sha512(time1m).hexdigest()
+            out=method.hash(time1m)
             if int(out,16) < int(newPackage.difficulty,16):
                 break
         end=time.time()

@@ -5,7 +5,8 @@ u"""
 from blockchain.protobuf import block_pb2
 from blockchain.chain import chain
 from blockchain import method
-class Block :
+from blockchain import implement
+class Block(implement.Block):
     def __init__(self):
         self.txs=dict()
         self.txhashs=[]

@@ -1,6 +1,6 @@
 
 from blockchain.enum import *
-
+from blockchain import implement
 class Chains :
     chainslist=dict()
     @staticmethod
@@ -11,7 +11,7 @@ class Chains :
     def getChain(chainid):
         return Chains.chainslist[chainid]
 
-class Chain:
+class Chain(implement.Chain):
     def __init__(self):
         self.blocklist=dict()
         self.firstblock=NOTFOUND

@@ -6,7 +6,8 @@ from blockchain.protobuf import guess_pb2
 from blockchain.enum import *
 from blockchain.member import member
 from blockchain import method
-class Guess:
+from blockchain import implement
+class Guess(implement.Guess):
     guessPool=dict()
     def __init__(self):
         self.chainids=[]

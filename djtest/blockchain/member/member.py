@@ -5,7 +5,8 @@ from Crypto.Cipher import PKCS1_v1_5 as Cipher_pkcs1_v1_5
 from Crypto.Signature import PKCS1_v1_5 as Signature_pkcs1_v1_5
 from Crypto.PublicKey import RSA
 import base64
-class Member:
+from blockchain import implement
+class Member(implement.Member):
     #未來拿掉
     private=""
     publics=dict()
@@ -17,6 +18,7 @@ class Member:
         self.private_pem = rsa.exportKey()
         Member.private=self
         self.publick_pem = rsa.publickey().exportKey()
+        self.userName=userName
         Member.publics[userName]=self.publick_pem
     @staticmethod
     def encrypto(userName,message):
