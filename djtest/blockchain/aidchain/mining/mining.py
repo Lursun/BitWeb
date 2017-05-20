@@ -1,27 +1,47 @@
 from blockchain.enum import *
 from blockchain import method
+from blockchain.aidchain.aidblock import aidblock
+from blockchain.aidchain.guess import guess
 import time
 import random
 
 REMINING=False
-def mining():
-    i=5
-    while i>0:
-        i-=1
-        newPackage=package.Package()
-        newPackage.bale()
+
+def setRemining(boolean):
+    global REMINING
+    REMINING=boolean
+def mine():
+    global REMINING
+    while True:
+        Block=aidblock.AidBlock()
+        Block.create()
+        Block.bale()
         start=time.time()
+        diff=Block.theBlockDifficulty()
         while not REMINING:
-            newPackage.setAnswer(str(random.random()))
-            time1m=newPackage.ToSerialize()
-            out=method.hash(time1m)
-            if int(out,16) < int(newPackage.difficulty,16):
+            Block.setAnswer(str(random.random()))
+            _blockhash=Block.computeSha512()
+            if int(_blockhash,16) < int(diff,16):
                 break
+        if REMINING:
+            
+            REMINING=False
+            continue
         end=time.time()
-        print out
-        print newPackage.answer
-        newPackage.setPackageHash(out)
-        newPackage.ToSerialize()
-        package.Package.packages.append(newPackage)
-        print("end",end-start)
-    
+        _blockhash=Block.computeHash()
+        Block.setBlockHash(_blockhash)
+        # print _blockhash
+        # print Block.getAnswer()
+        # print Block.setBlockHash(_blockhash)
+        # print Block.toString()
+        if Block.checkHash():
+            guess.Guess.clearTxPool()
+            try:
+                previousBlock=aidblock.getBlockFromHash(Block.getPreviousHash())
+                previousBlock.setNextHash(_blockhash)
+            except:
+                pass
+            if aidblock.getFirstAidBlockHash()==NOTFOUND:
+                aidblock.setFirstAidBlockHash(Block.getBlockHash())
+            aidblock.addAidChain(Block)
+        print "Mining Block : %s\n" % str(aidblock.getHeight())

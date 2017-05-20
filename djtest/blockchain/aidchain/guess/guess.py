@@ -50,10 +50,6 @@ class Guess(implement.Guess):
 
     def checkHash(serialize):
         raise NotImplementedError
-    def computeHash(self):
-        raise NotImplementedError
-    def isHash(self):
-        raise NotImplementedError
     
     def checkSign(self):
         return member.Member.private.verdify(self.__userid,self.__guessvalue,self.__sign)

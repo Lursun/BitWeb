@@ -13,6 +13,7 @@ from blockchain.package import package
 from blockchain.member import member
 from blockchain.aidchain.guess import guess
 from blockchain.aidchain.aidblock import aidblock
+from blockchain.aidchain.mining import mining
 lursun=member.Member()
 lursun.signUp("Lursun","最強的工程師：唐林竩")
 
@@ -20,9 +21,8 @@ firstTx=transaction.Tx()
 firstTx.create(TX_TYPE_CREATE_CHAIN,"management_chain","Bitweb:台灣 盧瑞山教授區塊鏈實驗室 之 研究員：唐林竩，所開發")
 
 chain.Chains.addChain("management_chain")
-
 guess.Guess()
-aidblock.AidBlock()
+
 
 
 # print "GENESIS PACKAGE"

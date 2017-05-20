@@ -12,14 +12,6 @@ class Protobuf:
     @abstractmethod
     def stringToObject(self):
         return
-    
-    @abstractmethod
-    def isHash(self):
-        return
-    
-    @abstractmethod
-    def computeHash(self):
-        return
 
     @abstractmethod
     def checkHash(self):
@@ -27,16 +19,17 @@ class Protobuf:
 
 class Block(Protobuf):
     @abstractmethod
-    def getBlock(self):
+    def computeHash(self):
+        return
+
+    @abstractmethod
+    def isBlockHash(self):
         return
     
     @abstractmethod
-    def isNext(self):
+    def isNextHash(self):
         return
-    
-    @abstractmethod
-    def next(self):
-        return
+
 
     @abstractmethod
     def setNextHash(self,nexthash): 
@@ -101,15 +94,15 @@ class Message(Protobuf):
 class AidBlock(Protobuf):
     __metaclass__ = ABCMeta
     @abstractmethod
-    def getBlock(self):
+    def isBlockHash(self):
+        return
+
+    @abstractmethod
+    def computeHash(self):
         return
     
     @abstractmethod
-    def isNext(self):
-        return
-    
-    @abstractmethod
-    def next(self):
+    def isNextHash(self):
         return
 
     @abstractmethod
@@ -135,9 +128,14 @@ class AidBlock(Protobuf):
     @abstractmethod
     def getGuess(self):
         return 
+
     @abstractmethod
     def bale(self):
         return
+    @abstractmethod
+    def setAnswer(self):
+        return
+    
 
 
 

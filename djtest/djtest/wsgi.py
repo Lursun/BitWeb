@@ -11,6 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 from blockchain.p2p import p2p
+from blockchain.aidchain.mining import mining
+import threading
+mineThread=threading.Thread(target=mining.mine)
+mineThread.start()
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djtest.settings")
 

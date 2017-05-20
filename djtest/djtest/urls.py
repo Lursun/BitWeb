@@ -24,7 +24,6 @@ urlpatterns = [
     url(r'^QueryBlocks/?$', management_views.QueryBlocks),
     url(r'^QueryBlock/?$', management_views.QueryBlock),
     url(r'^QueryChains/?$', management_views.QueryChains),
-    url(r'^QueryPackage/?$', management_views.QueryPackage),
     url(r'^QueryNode/?$', management_views.QueryNode),
     url(r'^QueryTxs/?$', management_views.QueryTxs),
     url(r'^QueryTx/?$', management_views.QueryTx),

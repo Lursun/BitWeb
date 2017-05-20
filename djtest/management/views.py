@@ -29,7 +29,8 @@ def Tx(request):
     tx.create(TX_TYPE_TEST,"management_chain",request.body)
     message_module.Message.send(MESSAGE_RESPONSE_TX,tx.tx_serialize)
     return HttpResponse(request.body)
-def QueryPackage(request):
+    
+def QueryAidBlock(request):
     return HttpResponse("")
 
 def QueryChains(request):

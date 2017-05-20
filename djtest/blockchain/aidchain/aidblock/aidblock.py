@@ -5,44 +5,86 @@ import time
 from blockchain import method
 from blockchain.enum import *
 from blockchain.aidchain.guess import guess
+from fractions import Fraction
+import random
 AidChain=dict();
-firstBlock=NOTFOUND
-def setFirstAidBlock(aidblockhash):
-    firstBlock=aidblockhash
+firstBlockHash=NOTFOUND
+def addAidChain(aidblock):
+    AidChain[aidblock.getBlockHash()]=aidblock
 
-def getFirstAidBlock(aidblockhash):
-    return firstBlock
+def setFirstAidBlockHash(aidblockhash):
+    global firstBlockHash
+    firstBlockHash=aidblockhash
 
+def getFirstAidBlockHash():
+    return firstBlockHash
+    
+def getBlockFromHash(aidblockhash):
+    return AidChain[aidblockhash]
+
+def getHeight():
+        blockhash=getFirstAidBlockHash()
+        if blockhash != NOTFOUND:
+            block=getBlockFromHash(blockhash)
+            i=1
+            while block.isNextHash():
+                i+=1
+                block=getBlockFromHash(block.getNextHash())
+            return i
+        return 0
+
+def getDifficulty():
+    h=getHeight()
+    if h<100:
+        return "ffff4269747765620ae9968be799bcefbc9ae59490e69e97e7aba9284c696e2d59692054616e672920206c757273756e39313430313340676d61696c2e636f6d"
+    i=h-h%100
+    blockhash=getFirstAidBlockHash()
+    temp=[]
+    block=getBlockFromHash(blockhash)
+    
+    while True:
+        temp.append(block.getTimestamp())
+        if i>100:
+            temp.pop(0)
+        if i <= 1:
+            break
+        block=getBlockFromHash(block.getNextHash())
+        i-=1
+    j=total=0
+
+    while j<99:
+        total+=temp[j+1]-temp[j]
+        j+=1
+    diff=block.theBlockDifficulty()
+    return format(int(int(diff,16)*Fraction(total)/6000),"x")
 
 def getLastAidBlock():
-    block=getFirstAidBlock()
-    if block != NOTFOUND:
-        while block.isNext():
-            block=self.getBlock(block.next())
+    blockhash=getFirstAidBlockHash()
+    if blockhash != NOTFOUND:
+        block=getBlockFromHash(blockhash)
+        while block.isNextHash():
+            block=getBlockFromHash(block.getNextHash())
         return block
     return NOTFOUND
 
-def getDifficulty(self):
-    if len(Package.packages)<100:
-        return 'ffff4269747765620ae9968be799bcefbc9ae59490e69e97e7aba9284c696e2d59692054616e672920206c757273756e39313430313340676d61696c2e636f6d'
-    else:
-        """
-        需更改
-        """
-        return '4269747765620ae9968be799bcefbc9ae59490e69e97e7aba9284c696e2d59692054616e672920206c757273756e39313430313340676d61696c2e636f6d'
 
 class AidBlock(implement.AidBlock):
     
     def __init__(self):
         pass
     def create(self):
-        self.__height=self.getHeight()
+        self.__height=str(self.getHeight())
         self.__version=1
-        self.__timestamp=str(time.time())
+        self.__timestamp=time.time()
         self.__guessers=[]
-        self.__difficulty=""
+        self.__random=random.randrange(0,2**64)
+        self.__difficulty=getDifficulty()
         self.__answer=""
-        self.__previoushash=getLastAidBlock()
+        block=getLastAidBlock()
+        if block==NOTFOUND:
+            self.__previoushash="First AidBlock"
+        else:
+            self.__previoushash=block.getBlockHash()
         self.__blockhash=""
         self.__nexthash=""
     def toString(self):
@@ -51,6 +93,7 @@ class AidBlock(implement.AidBlock):
         pb2.version=self.__version
         pb2.timestamp=self.__timestamp
         pb2.guessers.extend(self.__guessers)
+        pb2.random=self.__random
         pb2.difficulty=self.__difficulty
         pb2.answer=self.__answer
         pb2.previoushash=self.__previoushash
@@ -64,6 +107,7 @@ class AidBlock(implement.AidBlock):
         self.__version=pb2.version
         self.__timestamp=pb2.timestamp
         self.__guessers.extend(pb2.guessers)
+        self.__random=pb2.random
         self.__difficulty=pb2.difficulty
         self.__answer=pb2.answer
         self.__previoushash=pb2.previoushash
@@ -71,12 +115,13 @@ class AidBlock(implement.AidBlock):
         self.__nexthash=pb2.nexthash
 
     def checkHash(self):
-        temp1=pb2.blockhash
+        temp1=self.__blockhash
         pb2=aidblock_pb2.Aidblock()
         pb2.height=self.__height
         pb2.version=self.__version
         pb2.timestamp=self.__timestamp
         pb2.guessers.extend(self.__guessers)
+        pb2.random=self.__random
         pb2.difficulty=self.__difficulty
         pb2.answer=self.__answer
         pb2.previoushash=self.__previoushash
@@ -91,16 +136,83 @@ class AidBlock(implement.AidBlock):
         pb2.version=self.__version
         pb2.timestamp=self.__timestamp
         pb2.guessers.extend(self.__guessers)
+        pb2.random=self.__random
         pb2.difficulty=self.__difficulty
         pb2.answer=self.__answer
         pb2.previoushash=self.__previoushash
         pb2.blockhash=""
         pb2.nexthash=""
         return method.hash(pb2.SerializeToString())
+    def computeSha512(self):
+        pb2=aidblock_pb2.Aidblock()
+        pb2.height=self.__height
+        pb2.version=self.__version
+        pb2.timestamp=self.__timestamp
+        pb2.guessers.extend(self.__guessers)
+        pb2.random=self.__random
+        pb2.difficulty=self.__difficulty
+        pb2.answer=self.__answer
+        pb2.previoushash=self.__previoushash
+        pb2.blockhash=""
+        pb2.nexthash=""
+        return method.sha512(pb2.SerializeToString())
 
     def bale(self):
-        block=getLastAidBlock()
-        self.__guessers.extend(guess.Guess.getGuessPool())
+        self.setGuess()
         
+    
+    def getPreviousHash(self):
+        if self.__previoushash!=NOTFOUND:
+            return self.__previoushash
+        return NOTFOUND
+    
+    def isBlockHash(self):
+        if self.__blockhash != "":
+            return True
+        return False
+
+    def setNextHash(self,nexthash):
+        if self.isNextHash():
+            raise Exception
+        self.__nexthash=nexthash
+
+    def isNextHash(self):
+        if self.__nexthash != "":
+            return True
+        return False
+
+    def getNextHash(self):
+        return self.__nexthash
+    
+    def getBlockHash(self):
+        return self.__blockhash
+
+    def setBlockHash(self,blockhash):
+        self.__blockhash=blockhash
+    
     def getHeight(self):
-        return len(AidChain)
+        return getHeight()
+
+    def theBlockHeight(self):
+        return self.__height
+
+    def getGuess(self):
+        return self.__guessers
+    
+    def setGuess(self):
+        self.__guessers.extend( guess.Guess.getGuessPool() )
+    
+    def setAnswer(self,answer):
+        self.__answer=answer
+
+    def getAnswer(self):
+        return self.__answer
+    
+    def getDifficulty(self):
+        return getDifficulty()
+
+    def theBlockDifficulty(self):
+        return self.__difficulty
+        
+    def getTimestamp(self):
+        return self.__timestamp
