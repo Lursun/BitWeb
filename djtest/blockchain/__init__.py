@@ -23,8 +23,22 @@ firstTx.create(TX_TYPE_CREATE_CHAIN,"management_chain","Bitweb:台灣 盧瑞山�
 chain.Chains.addChain("management_chain")
 guess.Guess()
 
-
-
+Block=aidblock.AidBlock()
+Block.create()
+Block.firstBlock()
+start=time.time()
+diff=Block.theBlockDifficulty()
+while not True:
+    Block.setAnswer(str(random.random()))
+    _blockhash=Block.computeSha512()
+    if int(_blockhash,16) < int(diff,16):
+        break
+end=time.time()
+_blockhash=Block.computeHash()
+Block.setBlockHash(_blockhash)
+aidblock.setFirstAidBlockHash(Block.getBlockHash())
+aidblock.addAidChain(Block)
+print "First Hash:"+_blockhash
 # print "GENESIS PACKAGE"
 # #start=time.time()
 # print "WAIT GENESIS PACKAGE"

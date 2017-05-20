@@ -1,12 +1,13 @@
 #coding:utf-8
 from blockchain.protobuf import aidblock_pb2
 from blockchain import implement
-import time
 from blockchain import method
 from blockchain.enum import *
 from blockchain.aidchain.guess import guess
 from fractions import Fraction
+from blockchain.message import message
 import random
+import time
 AidChain=dict();
 firstBlockHash=NOTFOUND
 def addAidChain(aidblock):
@@ -20,6 +21,17 @@ def getFirstAidBlockHash():
     return firstBlockHash
     
 def getBlockFromHash(aidblockhash):
+    return AidChain[aidblockhash]
+
+def getBlockFromHeight(height):
+    blockhash=getFirstAidBlockHash()
+    while height > 0: 
+        block=getBlockFromHash(blockhash)
+        if block.isNextHash():
+            blockhash=block.getNextHash()
+            height-=1
+        else:
+            break
     return AidChain[aidblockhash]
 
 def getHeight():
@@ -42,6 +54,7 @@ def getDifficulty():
     temp=[]
     block=getBlockFromHash(blockhash)
     
+    #演算法尚可優化
     while True:
         temp.append(block.getTimestamp())
         if i>100:
@@ -53,10 +66,21 @@ def getDifficulty():
     j=total=0
 
     while j<99:
-        total+=temp[j+1]-temp[j]
+        sub=temp[j+1]-temp[j]
+        if sub<0 or sub>=86400:
+            sub=60
+        total+=sub
         j+=1
     diff=block.theBlockDifficulty()
     return format(int(int(diff,16)*Fraction(total)/6000),"x")
+
+def recv(serialize):
+    aidblock=AidBlock()
+    aidblock.stringToObject(serialize)
+    if aidblock.checkHash():
+        aid
+
+
 
 def getLastAidBlock():
     blockhash=getFirstAidBlockHash()
@@ -216,3 +240,24 @@ class AidBlock(implement.AidBlock):
         
     def getTimestamp(self):
         return self.__timestamp
+    
+    def send(self):
+        data=self.toString()
+        message.Message.send(MESSAGE_RESPONSE_AIDBLOCK,data)
+        
+    
+    def firstBlock(self):
+        self.__height=str(0)
+        self.__version=1
+        self.__timestamp=0.0
+        self.__guessers=[]
+        self.__random=0
+        self.__difficulty=getDifficulty()
+        self.__answer=""
+        block=getLastAidBlock()
+        if block==NOTFOUND:
+            self.__previoushash="First AidBlock"
+        else:
+            self.__previoushash=block.getBlockHash()
+        self.__blockhash=""
+        self.__nexthash=""

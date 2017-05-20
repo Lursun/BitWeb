@@ -4,6 +4,7 @@ from blockchain.enum import *
 import blockchain.p2p as p2p_module
 from blockchain.transaction import transaction
 from blockchain import implement
+from blockchain.aidchain import aidblock
 class Message(implement.Message):
     @staticmethod
     def recv(sock):
@@ -11,14 +12,25 @@ class Message(implement.Message):
         try:
             msg=message_pb2.Message()
             msg.ParseFromString(data) 
-            print msg.body
-            if msg.type == MESSAGE_RESPONSE_TX :
+            msgType=""
+            if msg.type / MESSAGE_BIGMESSAGE :
+                if msg.type / MESSAGE_BIGMESSAGE == 1:
+                    pass
+                msgType=msg.type % MESSAGE_BIGMESSAGE
+            else :
+                msgType=msg.type
+            
+            
+            if msgType == MESSAGE_RESPONSE_TX :
                 tx=transaction.Tx()
                 if tx.addTx(msg.body):
                     print "GET new Tx"
                     sock.passBroadcast(data)
                 else:
                     print ":)"
+            elif msgType == MESSAGE_RESPONSE_AIDBLOCK:
+                aidblock.aidblock.recv(msg.body)
+                
         except Exception as e:
             print e
 

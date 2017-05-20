@@ -24,7 +24,6 @@ def mine():
             if int(_blockhash,16) < int(diff,16):
                 break
         if REMINING:
-            
             REMINING=False
             continue
         end=time.time()
@@ -36,12 +35,8 @@ def mine():
         # print Block.toString()
         if Block.checkHash():
             guess.Guess.clearTxPool()
-            try:
-                previousBlock=aidblock.getBlockFromHash(Block.getPreviousHash())
-                previousBlock.setNextHash(_blockhash)
-            except:
-                pass
-            if aidblock.getFirstAidBlockHash()==NOTFOUND:
-                aidblock.setFirstAidBlockHash(Block.getBlockHash())
+            previousBlock=aidblock.getBlockFromHash(Block.getPreviousHash())
+            previousBlock.setNextHash(_blockhash)
             aidblock.addAidChain(Block)
-        print "Mining Block : %s\n" % str(aidblock.getHeight())
+            Block.send()
+        print "Mining AidBlock : %s\n" % str(aidblock.getHeight())
