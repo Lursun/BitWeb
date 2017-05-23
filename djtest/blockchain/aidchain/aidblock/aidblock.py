@@ -10,6 +10,9 @@ import random
 import time
 AidChain=dict();
 firstBlockHash=NOTFOUND
+
+heightWillReach=None
+
 def addAidChain(aidblock):
     AidChain[aidblock.getBlockHash()]=aidblock
 
@@ -74,11 +77,41 @@ def getDifficulty():
     diff=block.theBlockDifficulty()
     return format(int(int(diff,16)*Fraction(total)/6000),"x")
 
+def setHeightTarget(heightTarget):
+    global heightWillReach
+    heightWillReach=heightTarget
+
 def recv(serialize):
     aidblock=AidBlock()
     aidblock.stringToObject(serialize)
     if aidblock.checkHash():
-        aid
+        currentHeight=getHeight()
+        if aidblock.theBlockHeight()-currentHeight==1:
+            if getLastAidBlock().getBlockHash()==aidblock.getPreviousHash():
+                getLastAidBlock().setNextHash( aidblock.getBlockHash() )
+                if getHeight() <= currentHeight:
+                    raise Exception('Impossible at getNewBlock')
+                return True
+        if heightWillReach is None and aidblock.theBlockHeight()-currentHeight>=2:
+            setHeightTarget(currentHeight+1)
+            requestHeight(currentHeight+1)
+        elif aidblock.theBlockHeight()==heightWillReach :
+            if getLastAidBlock().getBlockHash()==aidblock.getPreviousHash():
+                getLastAidBlock().setNextHash( aidblock.getBlockHash() )
+                if getHeight() <= currentHeight:
+                    raise Exception('Impossible Error getNewBlock')
+                setHeightTarget(currentHeight+1)
+                requestHeight(currentHeight+1)
+                print "getOldBlock\n and I want Block %d" % heightWillReach+1
+                return True
+            else:
+                if heightWillReach !=1:
+                    setHeightTarget(heightWillReach-1)
+                    requestHeight(heightWillReach-1)
+                    print "I want Block %d" % heightWillReach-1
+                    return True
+                else:
+                    raise Exception('Impossible Error getOldBlock')
 
 
 
@@ -95,12 +128,12 @@ def getLastAidBlock():
 class AidBlock(implement.AidBlock):
     
     def __init__(self):
+        self.__guessers=[]
         pass
     def create(self):
         self.__height=str(self.getHeight())
         self.__version=1
         self.__timestamp=time.time()
-        self.__guessers=[]
         self.__random=random.randrange(0,2**64)
         self.__difficulty=getDifficulty()
         self.__answer=""

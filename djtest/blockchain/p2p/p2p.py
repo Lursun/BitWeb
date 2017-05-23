@@ -82,13 +82,9 @@ class SocketHandle(SocketServer.BaseRequestHandler):
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
 def P2PNetworkStart():
-    PORT=NODE=""
+    PORT=""
     try:
-        NODE=os.environ.get["P2P_CONNECT"]
-    except:
-        pass
-    try:
-        PORT=os.environ.get["P2P_PORT","8001"]
+        PORT=os.environ["P2P_PORT"]
     except:
         PORT=8001
     print("p2p listen port:"+str(PORT))

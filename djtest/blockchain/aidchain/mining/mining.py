@@ -29,10 +29,6 @@ def mine():
         end=time.time()
         _blockhash=Block.computeHash()
         Block.setBlockHash(_blockhash)
-        # print _blockhash
-        # print Block.getAnswer()
-        # print Block.setBlockHash(_blockhash)
-        # print Block.toString()
         if Block.checkHash():
             guess.Guess.clearTxPool()
             previousBlock=aidblock.getBlockFromHash(Block.getPreviousHash())
